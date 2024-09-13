@@ -2,7 +2,8 @@ package com.demo.security.constants;
 
 public class SecurityConstants {
     public static final String[] PUBLIC_ENDPOINTS = {
-            "/auth/**"
+            "/auth/**",
+            "/oauth2/**"
     };
     public static final String ROLE_PREFIX = "ROLE_";
 }

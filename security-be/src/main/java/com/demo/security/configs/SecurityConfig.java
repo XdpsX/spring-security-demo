@@ -1,5 +1,6 @@
 package com.demo.security.configs;
 
+import com.demo.security.security.oauth.CustomOAuth2UserService;
 import com.nimbusds.jose.JWSAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -45,7 +48,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http,
-            AuthenticationEntryPoint authenticationEntryPoint
+            AuthenticationEntryPoint authenticationEntryPoint,
+            CustomOAuth2UserService oAuth2UserService,
+            AuthenticationSuccessHandler oAuth2SuccessHandler,
+            AuthenticationFailureHandler oAuth2FailureHandler
     ) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(cors -> corsConfigurer());
@@ -66,6 +72,12 @@ public class SecurityConfig {
                         )
                         .authenticationEntryPoint(authenticationEntryPoint)
 
+        );
+        http.oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(user -> user.userService(oAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler)
+//                .failureUrl("/failure")
+                        .failureHandler(oAuth2FailureHandler)
         );
         return http.build();
     }
