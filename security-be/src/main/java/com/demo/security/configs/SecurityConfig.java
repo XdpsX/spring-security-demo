@@ -45,6 +45,7 @@ public class SecurityConfig {
             AuthenticationEntryPoint authenticationEntryPoint
     ) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
+        http.cors(cors -> corsConfigurer());
         http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
