@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .navbar-link {
+    @apply inline-block px-5 py-2 transition-colors hover:bg-yellow-500 hover:text-white;
+  }
+}
+
+.button-height {
+  @apply h-10;
+}
