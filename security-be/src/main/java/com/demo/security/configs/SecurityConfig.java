@@ -39,6 +39,9 @@ public class SecurityConfig {
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
 
+    @Value("${frontend.url}")
+    private String FRONTEND_URL;
+
     @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http,
@@ -111,7 +114,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173/")
+                        .allowedOrigins(FRONTEND_URL)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
